@@ -1,0 +1,1 @@
+If you're seeing this then you have not created a configuration file for glance. Please refer to the documentation.

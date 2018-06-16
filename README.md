@@ -6,4 +6,19 @@
 
 ---
 
-more coming soon...
+**Better documentation coming soon.**
+
+# What is glance?
+
+Glance is an open source tool for easily sharing the contents of a folder with people through the web.
+
+# Run it
+
+## Ubuntu 18.04
+
+```
+~$ sudo apt-get install luarocks
+~$ git clone git@github.com:jessehorne/glance.git
+~$ cd glance/
+~$ lua5.3 glance.lua
+```

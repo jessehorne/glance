@@ -1,6 +1,6 @@
 local kolba = require("kolba")
 
-local folder_path = "/home/jesseh/Documents/glance_test"
+local folder_path = kolba.lfs.currentdir() .. "/default"
 local folder_name = string.match(folder_path, "/([^/]+)$")
 
 local config = {
@@ -13,6 +13,18 @@ local app = kolba.create(config)
 
 -- Create routes for sub-folders in folder_path
 local folders = {}
+
+function read_from_file(path)
+	local contents
+	local file = io.open(path, "rb")
+
+	if file then
+		contents = file:read("a")
+	end
+	file:close()
+
+	return contents
+end
 
 function dig(path)
 	for folder in kolba.lfs.dir(path) do
@@ -37,6 +49,11 @@ function dig(path)
 							local _f = {
 								name = file
 							}
+
+							if kolba.mimetypes.guess(folder_path) == "text/plain" then
+								_f.file_body = read_from_file(path .. "/" .. folder .. "/" .. file)
+							end
+
 							table.insert(files, _f)
 						end
 					else
@@ -96,6 +113,10 @@ for folder in kolba.lfs.dir(folder_path) do
 		local _file = {
 			name = folder_name
 		}
+
+		if kolba.mimetypes.guess(folder_path) == "text/plain" then
+			_file.file_body = read_from_file(folder_path)
+		end
 
 		table.insert(files, _file)
 	end

@@ -48,9 +48,16 @@
 						    <img width="64" height="64" class="email-avatar" src="">
 						</div>
 
-						<div class="pure-u-3-4">
-						    <h4 class="email-subject">{{name}}</h4>
-						</div>
+							{{#file_body}}
+								<div class="pure-u-3-4 file_selector">
+									<h4 class="email-subject">{{name}}</h4>
+								</div>
+							{{/file_body}}
+							{{^file_body}}
+								<div class="pure-u-3-4">
+									<h4 class="email-subject">{{name}}</h4>
+								</div>
+							{{/file_body}}
 					</div>
 				{{/files}}
 				{{^files}}
@@ -64,13 +71,39 @@
 
 
 			<div id="main" class="pure-u-1">
-				{{#medium_image}}
-					<img align="center" width="80%" height="80%" src="#">
-				{{/medium_image}}
-				{{^medium_image}}
-					<h1>Click on a file.</h1>
-				{{/medium_image}}
+				{{#files}}
+					{{#file_body}}
+						<p class="file-bodz" style="display: none;">{{file_body}}</p>
+					{{/file_body}}
+					{{^file_body}}
+						<p>This file has no body.</p>
+					{{/file_body}}
+				{{/files}}
 			</div>
 		</div>
+
+		<script type="text/javascript">
+
+			window.addEventListener('load', function() {
+
+				bodz = document.getElementsByClassName("file-bodz");
+				selectors = document.getElementsByClassName("file_selector");
+
+				toggleBod = function(which) {
+					for (var i=0; i<bodz.length; i++) {
+						bodz[i].style.display = "none";
+					}
+					bodz[which].style.display = bodz[which].style.display == "none" ? "inline" : "none";
+				}
+
+				if (selectors.length > 0) {
+					for (var i=0; i<selectors.length; i++) {
+						(function(num) {
+							selectors[num].onclick = function() { toggleBod(num) };
+						})(i);
+					}
+				}
+			});
+		</script>
 	</body>
 </html>
