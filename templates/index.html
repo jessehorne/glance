@@ -52,18 +52,20 @@
 				{{#files}}
 					<div class="email-item email-item-selected pure-g">
 						<div class="pure-u">
-						    <!-- <img width="64" height="64" class="email-avatar" src=""> -->
+							<!-- <img width="64" height="64" class="email-avatar" src=""> -->
 						</div>
+
+							{{#image}}
+								<div class="pure-u-3-4 file_selector">
+									<h4 class="email-name"><i class="{{icon}}"></i> {{name}}</h4>
+									<h6 class="email-subject">{{size}}</h6>
+								</div>
+							{{/image}}
 
 							{{#file_body}}
 								<div class="pure-u-3-4 file_selector">
 									<h4 class="email-name"><i class="{{icon}}"></i> {{name}}</h4>
 									<h6 class="email-subject">{{size}}</h6>
-								</div>
-							{{/file_body}}
-							{{^file_body}}
-								<div class="pure-u-3-4">
-									<h4 class="email-subject">{{name}}</h4>
 								</div>
 							{{/file_body}}
 					</div>
@@ -80,11 +82,11 @@
 
 			<div id="main" class="pure-u-1">
 				{{#files}}
+					{{#image}}
+						<img class="file-bodz" style="display: none;" src="{{image}}" max-width="500px" max-height="500px">
+					{{/image}}
 					{{#file_body}}
 						<p class="file-bodz" style="display: none;">{{file_body}}</p>
-					{{/file_body}}
-					{{^file_body}}
-						<p>This file has no body.</p>
 					{{/file_body}}
 				{{/files}}
 			</div>

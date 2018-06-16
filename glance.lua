@@ -63,10 +63,10 @@ function dig(path)
 					if file_attr.mode ~= "directory" then
 						if file ~= "." and file ~= ".." then
 							size = file_attr.size
-							if size > 1000 then
-								size = tostring(size/1000.0) .. "MB"
+							if size > 1000000 then
+								size = tostring(size/10000.0) .. "MB"
 							else
-								size = tostring(size) .. "KB"
+								size = tostring(size/1000.0) .. "KB"
 							end
 							local _f = {
 								name = file,
@@ -74,8 +74,18 @@ function dig(path)
 								size = size
 							}
 
-							if kolba.mimetypes.guess(hosting_path) == "text/plain" then
-								_f.file_body = read_from_file(path .. "/" .. folder .. "/" .. file)
+							_mimetype = kolba.mimetypes.guess(folder_path)
+
+							if _mimetype == "text/plain" then
+								_file.file_body = read_from_file(folder_path)
+							elseif _mimetype == "image/jpeg" then
+								_file.image = folder_route
+
+								app.route("GET", folder_route, {200, "image/jpeg", read_from_file(folder_path)})
+							elseif _mimetype == "image/png" then
+								_file.image = folder_route
+
+								app.route("GET", folder_route, {200, "image/png", read_from_file(folder_path)})
 							end
 
 							table.insert(files, _f)
@@ -138,10 +148,10 @@ for folder in kolba.lfs.dir(hosting_path) do
 		end
 	else
 		size = attr.size
-		if size > 1000 then
-			size = tostring(size/1000.0) .. "MB"
+		if size > 1000000 then
+			size = tostring(size/10000.0) .. "MB"
 		else
-			size = tostring(size) .. "KB"
+			size = tostring(size/1000.0) .. "KB"
 		end
 		local _file = {
 			name = folder_name,
@@ -149,8 +159,18 @@ for folder in kolba.lfs.dir(hosting_path) do
 			size = size
 		}
 
-		if kolba.mimetypes.guess(folder_path) == "text/plain" then
+		_mimetype = kolba.mimetypes.guess(folder_path)
+
+		if _mimetype == "text/plain" then
 			_file.file_body = read_from_file(folder_path)
+		elseif _mimetype == "image/jpeg" then
+			_file.image = folder_route
+
+			app.route("GET", folder_route, function() return {200, "image/jpeg", read_from_file(folder_path)} end)
+		elseif _mimetype == "image/png" then
+			_file.image = folder_route
+
+			app.route("GET", folder_route, function() return {200, "image/png", read_from_file(folder_path)} end)
 		end
 
 		table.insert(files, _file)
