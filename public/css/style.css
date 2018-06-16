@@ -17,3 +17,17 @@
 .email-item:hover {
 	opacity: 0.5;
 }
+
+.file-header {
+    padding: 0.9em 1em;
+    border-bottom: 1px solid #ddd;
+    border-left: 6px solid transparent;
+}
+
+.pure-menu-item {
+	border-bottom: 1px solid white;
+}
+
+.far {
+	font-size: 40px;
+}

@@ -4,23 +4,25 @@
 		<meta charset="utf-8">
 		<title>{{title}}</title>
 
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 		<link rel="stylesheet" href="/css/pure-min.css">
 		<link rel="stylesheet" href="/css/layouts/email.css">
 		<link rel="stylesheet" href="/css/style.css"/>
 	</head>
 	<body>
+
 		<div id="layout" class="content pure-g">
 		    <div id="nav" class="pure-u">
 		        <a href="#" class="nav-menu-button">Menu</a>
 
 		        <div class="nav-inner">
-		            <button class="primary-button pure-button">glance v0.1.0</button>
+		            <button class="primary-button pure-button">glance</button>
 
 		            <div class="pure-menu">
 		                <ul class="pure-menu-list">
 								  <li class="pure-menu-heading">Folders</li>
 								  {{#folders}}
-								  		<li class="pure-menu-item"><a href="{{route}}" class="pure-menu-link">{{name}}/</a></li>
+								  		<li class="pure-menu-item"><a href="{{route}}" class="pure-menu-link"><i class="fas fa-folder"></i> {{folder}}/</a></li>
 								  {{/folders}}
 								  {{^folders}}
 								  		<li class="pure-menu-item"><b class="pure-menu-link">No folders here...</b></li>
@@ -29,8 +31,13 @@
 		            </div>
 		        </div>
 		    </div>
-			 <div class="folder"><h4 class="email-subject">serving <b>'{{folder}}'</b></h4></div>
+			 <div class="folder"><h4 class="email-subject">glance v0.1.0 serving <b>'{{hosting}}/'</b></h4></div>
 			 <div id="list" class="pure-u-1">
+				 <div class="email-item pure-g">
+					 <div class="pure-u-3-4">
+						  <h4 class="email-subject">Files</h4>
+					 </div>
+				 </div>
 				{{#back}}
 					<div class="email-item email-item-selected pure-g">
 						<div class="pure-u">
@@ -38,19 +45,20 @@
 						</div>
 
 						<div class="pure-u-3-4">
-							 <h4 class="email-subject" onclick="window.location.href = '{{back}}';">..</h4>
+							 <h4 class="email-name" onclick="window.location.href = '{{back}}';"><i class="fas fa-folder"></i>..</h4>
 						</div>
 					</div>
 				{{/back}}
 				{{#files}}
 					<div class="email-item email-item-selected pure-g">
 						<div class="pure-u">
-						    <img width="64" height="64" class="email-avatar" src="">
+						    <!-- <img width="64" height="64" class="email-avatar" src=""> -->
 						</div>
 
 							{{#file_body}}
 								<div class="pure-u-3-4 file_selector">
-									<h4 class="email-subject">{{name}}</h4>
+									<h4 class="email-name"><i class="{{icon}}"></i> {{name}}</h4>
+									<h6 class="email-subject">{{size}}</h6>
 								</div>
 							{{/file_body}}
 							{{^file_body}}

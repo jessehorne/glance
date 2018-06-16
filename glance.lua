@@ -1,7 +1,7 @@
 local kolba = require("kolba")
 
-local folder_path = kolba.lfs.currentdir() .. "/default"
-local folder_name = string.match(folder_path, "/([^/]+)$")
+local hosting_path = kolba.lfs.currentdir() .. "/default"
+local hosting = string.match(hosting_path, "/([^/]+)$")
 
 local config = {
 	host="localhost",
@@ -11,8 +11,24 @@ local config = {
 
 local app = kolba.create(config)
 
+local icons = {}
+icons["text/plain"] = "far fa-file-alt"
+icons["image/jpeg"] = "far fa-image"
+icons["image/png"] = "far fa-image"
+
+
 -- Create routes for sub-folders in folder_path
 local folders = {}
+
+function get_icon(filepath)
+	local icon = "fa-question"
+
+	local mimetype = kolba.mimetypes.guess(filepath)
+
+	if icons[mimetype] then return icons[mimetype] end
+
+	return icon
+end
 
 function read_from_file(path)
 	local contents
@@ -34,8 +50,8 @@ function dig(path)
 			if folder ~= "." and folder ~= ".." then
 				local sub_folder_name = folder
 				local sub_folder_path = path .. "/" .. folder
-				local sub_folder_route = string.match(sub_folder_path, folder_path .. "(/.+)$")
-				local sub_folder_back = string.match(path, folder_path .. "(.+)$") or "/"
+				local sub_folder_route = string.match(sub_folder_path, hosting_path .. "(/.+)$")
+				local sub_folder_back = string.match(path, hosting_path .. "(.+)$") or "/"
 
 
 				local files = {}
@@ -46,11 +62,19 @@ function dig(path)
 
 					if file_attr.mode ~= "directory" then
 						if file ~= "." and file ~= ".." then
+							size = file_attr.size
+							if size > 1000 then
+								size = tostring(size/1000.0) .. "MB"
+							else
+								size = tostring(size) .. "KB"
+							end
 							local _f = {
-								name = file
+								name = file,
+								icon = get_icon(path .. "/" .. folder .. "/" .. file),
+								size = size
 							}
 
-							if kolba.mimetypes.guess(folder_path) == "text/plain" then
+							if kolba.mimetypes.guess(hosting_path) == "text/plain" then
 								_f.file_body = read_from_file(path .. "/" .. folder .. "/" .. file)
 							end
 
@@ -70,7 +94,8 @@ function dig(path)
 
 				local view = function()
 					local model = {
-						title = "Glance",
+						title = "glance",
+						hosting = hosting,
 						folders=_folders,
 						files = files,
 						back = sub_folder_back
@@ -86,15 +111,15 @@ function dig(path)
 		end
 	end
 end
-dig(folder_path)
+dig(hosting_path)
 
 
 local folders = {}
 local files = {}
 
-for folder in kolba.lfs.dir(folder_path) do
+for folder in kolba.lfs.dir(hosting_path) do
 	local folder_name = folder
-	local folder_path = folder_path .. "/" .. folder_name
+	local folder_path = hosting_path .. "/" .. folder_name
 	local folder_route = "/" .. folder_name
 
 	local attr = kolba.lfs.attributes(folder_path)
@@ -102,7 +127,9 @@ for folder in kolba.lfs.dir(folder_path) do
 	if attr.mode == "directory" then
 		if folder_name ~= "." and folder_name ~= ".." then
 			local _f = {
-				name = folder_name,
+				name = "glance",
+				hosting = hosting,
+				folder = folder_name,
 				route = folder_route,
 				back = "/"
 			}
@@ -110,8 +137,16 @@ for folder in kolba.lfs.dir(folder_path) do
 			table.insert(folders, _f)
 		end
 	else
+		size = attr.size
+		if size > 1000 then
+			size = tostring(size/1000.0) .. "MB"
+		else
+			size = tostring(size) .. "KB"
+		end
 		local _file = {
-			name = folder_name
+			name = folder_name,
+			icon = get_icon(folder_path),
+			size = size
 		}
 
 		if kolba.mimetypes.guess(folder_path) == "text/plain" then
@@ -124,8 +159,9 @@ end
 
 local view = function()
 	local model = {
-		title = "Glance",
-		folders=folders,
+		title = "glance",
+		hosting = hosting,
+		folders = folders,
 		files = files
 	}
 
@@ -135,6 +171,6 @@ end
 app.route("GET", "/", view)
 
 
-print("glance will be serving '" .. folder_name .. "' (" .. folder_path .. ").")
+print("glance will be serving '" .. hosting .. "' (" .. hosting_path .. ").")
 
 app.run()
