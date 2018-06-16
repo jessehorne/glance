@@ -1,0 +1,19 @@
+.folder {
+	background: rgb(57, 62, 78);
+	color: #fff;
+	margin: 0;
+	padding-top: 10px;
+	text-align: center;
+	position: fixed;
+	top: 0;
+	margin-left: -350px;
+	height: 30px;
+	width: 100%;
+	letter-spacing: normal;
+	font-style: italic;
+	z-index: -999;
+}
+
+.email-item:hover {
+	opacity: 0.5;
+}
