@@ -6,14 +6,4 @@
 
 ---
 
-# Run it
-
-## Ubuntu 18.04
-
-```
-
-```
-
-# Credits
-
-The stunning scenic pictures were taken by [@jairph](https://unsplash.com/@jairph) (located in <i>public/img/jairpg</i>).
+more coming soon...
