@@ -4,7 +4,7 @@ source = {
    url = "http://github.com/jessehorne/glance" -- We don't have one yet
 }
 description = {
-   summary = "A beautiful file browsing application built with kolba.",
+   summary = "A beautiful file browsing application built with Turbo.",
    detailed = [[
 		coming soon...
    ]],
@@ -12,8 +12,10 @@ description = {
    license = "MIT"
 }
 dependencies = {
-   "lua == 5.3",
-	"luafilesystem"
+   "turbo >= 2.1-2",
+	"luafilesystem",
+	"mimetypes",
+	"lua-vips"
 }
 build = {
    type = "builtin",

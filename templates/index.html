@@ -5,9 +5,10 @@
 		<title>{{title}}</title>
 
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-		<link rel="stylesheet" href="/css/pure-min.css">
-		<link rel="stylesheet" href="/css/layouts/email.css">
-		<link rel="stylesheet" href="/css/style.css"/>
+		<link rel="stylesheet" href="/static/css/pure-min.css">
+		<link rel="stylesheet" href="/static/css/layouts/email.css">
+		<link rel="stylesheet" href="/static/css/style.css"/>
+		<link rel="shortcut icon" href="/static/favicon.ico"/>
 	</head>
 	<body>
 
@@ -22,7 +23,7 @@
 		                <ul class="pure-menu-list">
 								  <li class="pure-menu-heading">Folders</li>
 								  {{#folders}}
-								  		<li class="pure-menu-item"><a href="{{route}}" class="pure-menu-link"><i class="fas fa-folder"></i> {{folder}}/</a></li>
+								  		<li class="pure-menu-item"><a href="{{route}}" class="pure-menu-link"><i class="fas fa-folder"></i> {{name}}/</a></li>
 								  {{/folders}}
 								  {{^folders}}
 								  		<li class="pure-menu-item"><b class="pure-menu-link">No folders here...</b></li>
@@ -38,82 +39,33 @@
 						  <h4 class="email-subject">Files</h4>
 					 </div>
 				 </div>
-				{{#back}}
+				 {{#files}}
 					<div class="email-item email-item-selected pure-g">
-						<div class="pure-u">
-							 <img width="64" height="64" class="email-avatar" src="">
-						</div>
+						{{#image}}
+							<div class="pure-u-3-4 file_selector">
+								<h4 class="email-name">{{name}}</h4>
+								<!-- <h6 class="email-subject">{{size}}</h6> -->
+							</div>
+						{{/image}}
 
-						<div class="pure-u-3-4">
-							 <h4 class="email-name" onclick="window.location.href = '{{back}}';"><i class="fas fa-folder"></i>..</h4>
-						</div>
-					</div>
-				{{/back}}
-				{{#files}}
-					<div class="email-item email-item-selected pure-g">
-						<div class="pure-u">
-							<!-- <img width="64" height="64" class="email-avatar" src=""> -->
-						</div>
-
-							{{#image}}
-								<div class="pure-u-3-4 file_selector">
-									<h4 class="email-name"><i class="{{icon}}"></i> {{name}}</h4>
-									<h6 class="email-subject">{{size}}</h6>
-								</div>
-							{{/image}}
-
-							{{#file_body}}
-								<div class="pure-u-3-4 file_selector">
-									<h4 class="email-name"><i class="{{icon}}"></i> {{name}}</h4>
-									<h6 class="email-subject">{{size}}</h6>
-								</div>
-							{{/file_body}}
+						{{#file_body}}
+							<div class="pure-u-3-4 file_selector">
+								<h4 class="email-name">{{name}}</h4>
+								<!-- <h6 class="email-subject">{{size}}</h6> -->
+							</div>
+						{{/file_body}}
 					</div>
 				{{/files}}
 				{{^files}}
-					<div class="email-item email-item-selected pure-g">
+					<div class="email-item pure-g">
 						<div class="pure-u-3-4">
 							 <h4 class="email-subject">No files here. :(</h4>
 						</div>
 					</div>
 				{{/files}}
 			 </div>
-
-
-			<div id="main" class="pure-u-1">
-				{{#files}}
-					{{#image}}
-						<img class="file-bodz" style="display: none;" src="{{image}}" max-width="500px" max-height="500px">
-					{{/image}}
-					{{#file_body}}
-						<p class="file-bodz" style="display: none;">{{file_body}}</p>
-					{{/file_body}}
-				{{/files}}
-			</div>
 		</div>
 
-		<script type="text/javascript">
 
-			window.addEventListener('load', function() {
-
-				bodz = document.getElementsByClassName("file-bodz");
-				selectors = document.getElementsByClassName("file_selector");
-
-				toggleBod = function(which) {
-					for (var i=0; i<bodz.length; i++) {
-						bodz[i].style.display = "none";
-					}
-					bodz[which].style.display = bodz[which].style.display == "none" ? "inline" : "none";
-				}
-
-				if (selectors.length > 0) {
-					for (var i=0; i<selectors.length; i++) {
-						(function(num) {
-							selectors[num].onclick = function() { toggleBod(num) };
-						})(i);
-					}
-				}
-			});
-		</script>
 	</body>
 </html>
