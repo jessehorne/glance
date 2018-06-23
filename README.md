@@ -12,11 +12,14 @@
 
 Glance is an open source tool for easily sharing the contents of a folder with people through the web.
 
+![screenshot](assets/screenshot.png)
+
 # Run it
 
 ## Ubuntu 18.04
-
+Edit "src/config.lua" before proceeding.
 ```
 $ apt-get install luajit luarocks git build-essential libssl-dev
 $ luarocks make
+$ turbovisor glance.lua
 ```
