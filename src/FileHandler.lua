@@ -2,12 +2,13 @@ local turbo = require("turbo")
 local lfs = require("lfs")
 local basexx = require("basexx")
 local vips = require("vips")
+local config = require("src/config")
 local FileHandler = class("FileHandler", turbo.web.RequestHandler)
 
 
 local files = {}
-local project_path = "/home/jesseh/Documents/glance_test/test"
-local project_name = "test"
+local project_path = config.project_path
+local project_name = config.project_name
 
 local dig_files = {}
 
