@@ -15,7 +15,8 @@ dependencies = {
    "turbo >= 2.1-2",
 	"luafilesystem",
 	"mimetypes",
-	"lua-vips"
+	"lua-vips",
+	"basexx"
 }
 build = {
    type = "builtin",

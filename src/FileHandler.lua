@@ -1,5 +1,7 @@
 local turbo = require("turbo")
 local lfs = require("lfs")
+local basexx = require("basexx")
+local vips = require("vips")
 local FileHandler = class("FileHandler", turbo.web.RequestHandler)
 
 
@@ -28,11 +30,27 @@ function dig(path)
 				local is = function(p) return string.find(full_folder_path, p) end
 
 				if is(".jpg") or is(".png") then
-					_f.contents = "Images cannot currently be displayed."
+					local file = io.open(full_folder_path, "rb")
+					if file then
+						local img = vips.Image.thumbnail(full_folder_path, 400)
+
+						_f.type = "image"
+						if is(".jpg") then
+							local new_img = img:write_to_buffer(".jpg")
+							_f.contents = basexx.to_base64(new_img)
+							_f.ext = "jpg"
+						elseif is(".png") then
+							local new_img = img:write_to_buffer(".png")
+							_f.contents = basexx.to_base64(new_img)
+							_f.ext = "png"
+						end
+					end
+					file:close()
 				elseif is(".txt") then
 					local file = io.open(full_folder_path, "rb")
 					if file then
 						_f.contents = file:read("a")
+						_f.type = "text"
 					end
 					file:close()
 				else

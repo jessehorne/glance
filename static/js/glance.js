@@ -35,10 +35,26 @@ var glance = function() {
 								new_li2.innerHTML = file.name;
 								new_li2.onclick = function() {
 									if (file.contents !== undefined) {
-										viewer.innerHTML = "<p>" + htmlEscape(file.contents) + "</p>";
+										if (file.type !== undefined) {
+											viewer.innerHTML = "";
+											if (file.type == "image") {
+												var new_img = document.createElement("img");
+												if (file.ext !== undefined) {
+													if (file.ext == "jpg") {
+														new_img.src = "data:image/jpeg;base64, " + file.contents;
+													} else if (file.ext == "png") {
+														new_img.src = "data:image/png;base64, " + file.contents;
+													}
+												}
+												new_img.className = "viewer-img";
+												viewer.appendChild(new_img)
+											} else {
+												viewer.innerHTML = "<p>" + htmlEscape(file.contents) + "</p>";
+											}
+										}
 									}
 								}
-								
+
 								new_ul.appendChild(new_li2);
 							})
 
@@ -60,7 +76,23 @@ var glance = function() {
 						new_li.innerHTML = "<i>" + file.name + "</i>";
 						new_li.onclick = function() {
 							if (file.contents !== undefined) {
-								viewer.innerHTML = "<p>" + htmlEscape(file.contents) + "</p>";
+								if (file.type !== undefined) {
+									viewer.innerHTML = "";
+									if (file.type == "image") {
+										var new_img = document.createElement("img");
+										if (file.ext !== undefined) {
+											if (file.ext == "jpg") {
+												new_img.src = "data:image/jpeg;base64, " + file.contents;
+											} else if (file.ext == "png") {
+												new_img.src = "data:image/png;base64, " + file.contents;
+											}
+										}
+										new_img.className = "viewer-img";
+										viewer.appendChild(new_img)
+									} else {
+										viewer.innerHTML = "<p>" + htmlEscape(file.contents) + "</p>";
+									}
+								}
 							}
 						}
 
